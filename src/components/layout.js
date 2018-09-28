@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link } from 'gatsby'
+import './reset.js';
 
 class Template extends React.Component {
   render() {
