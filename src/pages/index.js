@@ -5,7 +5,6 @@ import Helmet from 'react-helmet'
 
 import Bio from '../components/Bio'
 import Layout from '../components/layout'
-import { rhythm } from '../utils/typography'
 
 class BlogIndex extends React.Component {
   render() {
@@ -16,6 +15,23 @@ class BlogIndex extends React.Component {
     )
     const posts = get(this, 'props.data.allMarkdownRemark.edges')
 
+    const postsMapped = posts.map(({ node }) => {
+      const title = get(node, 'frontmatter.title') || node.fields.slug
+      return (
+        <div key={node.fields.slug}>
+          <h3>
+            <Link to={node.fields.slug}>
+              {title}
+            </Link>
+          </h3>
+          <small>{node.frontmatter.date}</small>
+          <br/>
+          <small>Time to read: {node.timeToRead} minutes</small>
+          <p dangerouslySetInnerHTML={{ __html: node.excerpt }} />
+        </div>
+      )
+    })
+
     return (
       <Layout location={this.props.location}>
         <Helmet
@@ -23,21 +39,7 @@ class BlogIndex extends React.Component {
           meta={[{ name: 'description', content: siteDescription }]}
           title={siteTitle}
         />
-        <Bio />
-        {posts.map(({ node }) => {
-          const title = get(node, 'frontmatter.title') || node.fields.slug
-          return (
-            <div key={node.fields.slug}>
-              <h3>
-                <Link to={node.fields.slug}>
-                  {title}
-                </Link>
-              </h3>
-              <small>{node.frontmatter.date}</small>
-              <p dangerouslySetInnerHTML={{ __html: node.excerpt }} />
-            </div>
-          )
-        })}
+        {postsMapped}
       </Layout>
     )
   }
@@ -57,6 +59,8 @@ export const pageQuery = graphql`
       edges {
         node {
           excerpt
+          id
+          timeToRead
           fields {
             slug
           }
