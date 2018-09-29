@@ -3,17 +3,13 @@ import { Link, graphql } from 'gatsby'
 import get from 'lodash/get'
 import Helmet from 'react-helmet'
 
-import Bio from '../components/Bio'
 import Layout from '../components/layout'
 
 class BlogIndex extends React.Component {
   render() {
-    const siteTitle = get(this, 'props.data.site.siteMetadata.title')
-    const siteDescription = get(
-      this,
-      'props.data.site.siteMetadata.description'
-    )
-    const posts = get(this, 'props.data.allMarkdownRemark.edges')
+    const siteTitle = this.props.data.site.siteMetadata.title;
+    const siteDescription = this.props.data.site.siteMetadata.description;
+    const posts = this.props.data.allMarkdownRemark.edges;
 
     const postsMapped = posts.map(({ node }) => {
       const title = get(node, 'frontmatter.title') || node.fields.slug

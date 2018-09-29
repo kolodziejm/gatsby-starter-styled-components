@@ -1,15 +1,13 @@
 import React from 'react'
 import Helmet from 'react-helmet'
 import { Link,graphql } from 'gatsby'
-import get from 'lodash/get' // do pobierania z obiektu
 
-import Bio from '../components/Bio'
 import Layout from '../components/layout'
 
 class BlogPostTemplate extends React.Component {
   render() {
     const post = this.props.data.markdownRemark
-    const siteTitle = get(this.props, 'data.site.siteMetadata.title')
+    const siteTitle = this.props.data.site.siteMetadata.title;
     const siteDescription = post.excerpt
 
     return (
